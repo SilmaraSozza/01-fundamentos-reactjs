@@ -3,19 +3,29 @@ import { Comment } from './Comment';
 
 import styles from './Post.module.css';
 
-export function Post(props) {
+export function Post( {author, publishedAt }) {
+  const publishedAtDateFormatted = new Intl.DateTimeFormat('pt-BR',{
+    day: '2-digit',
+    month: 'long',
+    hour: '2-digit',
+    minute:'2-digit'
+  }).format(publishedAt);
+
+
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
           <img className={styles.avatar}  />
-          <Avatar src= {props.author.avatarUrl} />
+          <Avatar src= {author.avatarUrl} />
           <div className={styles.authorInfo}>
-            <strong> {props.author.name}</strong>
-            <span>{props.author.role}</span>
+            <strong> {author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
-        <time title="11 de Maio às 08:13h" dateTime="2022-05-11 08:13:00">Publicado há 1h</time>
+        <time title="11 de Maio às 08:13h" dateTime="2022-05-11 08:13:00">
+          {publishedAtDateFormatted}
+          </time>
       </header>
       <div className={styles.content}>
         
