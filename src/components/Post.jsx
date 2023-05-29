@@ -10,8 +10,7 @@ import styles from './Post.module.css';
 
 export function Post( {author, publishedAt, content}) {
   const [comments, setComments] = useState([
-    'Post muito bacana!'
-  ])
+    'Post muito bacana!' ])
 
   const [newCommentText, setNewCommentText] = useState('');
   
@@ -33,8 +32,14 @@ export function Post( {author, publishedAt, content}) {
   }
 
   function handleNewCommentChange() {
+    event.target.setCustomValidity('');
     setNewCommentText(event.target.value);
   }
+
+  function handleNewCommentInvalid() {
+    event.target.setCustomValidity('Esse campo é obrigatório!');
+  }
+    
 
   function deleteComment(commenttoDelete) {
     const commentsWithoutDeleteOne = comments.filter(comment => {
@@ -44,17 +49,17 @@ export function Post( {author, publishedAt, content}) {
     setComments(commentsWithoutDeleteOne);
 
   }
+
+  const isNewCommentEmpty = newCommentText.length === 0;
    
       
-   return (
-    <article className={styles.post}>
-
+  return (
+    <article className={styles.post}> 
       <header>
         <div className={styles.author}>
-          <img className={styles.avatar}  />
-          <Avatar src= {author.avatarUrl} />
+          <Avatar src={author.avatarUrl} />
           <div className={styles.authorInfo}>
-            <strong> {author.name}</strong>
+            <strong>{author.name}</strong>
             <span>{author.role}</span>
           </div>
         </div>
@@ -74,6 +79,7 @@ export function Post( {author, publishedAt, content}) {
       })}
         
       </div>
+
       <form onSubmit={ handleCreateNewComment }  className={styles.commentForm}>
         <strong>Deixe seu feedback</strong>
       
@@ -82,9 +88,12 @@ export function Post( {author, publishedAt, content}) {
          placeholder="Deixe um comentário"
          value={newCommentText}
          onChange={handleNewCommentChange}
+         onInvalid={handleNewCommentInvalid}
+         required
         />
         <footer>
-          <button type="submit">Publicar</button>
+          <button type="submit" disabled= {isNewCommentEmpty}>
+            Publicar</button>
         </footer>
       </form>
 
